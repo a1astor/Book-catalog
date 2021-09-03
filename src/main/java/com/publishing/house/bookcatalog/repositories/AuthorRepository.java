@@ -19,7 +19,8 @@ public class AuthorRepository {
 
     private final EntityManager entityManager;
 
-    public AuthorRepository(@Autowired EntityManager entityManager) {
+    @Autowired
+    public AuthorRepository(EntityManager entityManager) {
         this.entityManager = entityManager;
     }
 
@@ -27,26 +28,22 @@ public class AuthorRepository {
         return entityManager.createQuery("from Author").getResultList();
     }
 
-    @Transactional
     public Author saveAuthor(Author author) {
         entityManager.persist(author);
         return author;
     }
 
-    @Transactional
     public Author updateAuthor(Author author) {
         entityManager.merge(author);
         return author;
     }
 
-    @Transactional
     public Author deleteAuthorById(Long id) {
         final Author author = entityManager.find(Author.class, id);
         entityManager.remove(author);
         return author;
     }
 
-    @Transactional
     public Author getAuthorById(Long id) {
         return entityManager.find(Author.class, id);
     }

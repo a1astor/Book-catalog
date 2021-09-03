@@ -41,7 +41,6 @@ public class Review implements Serializable {
     private Date createDate;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "isbn", nullable = false)
     @JsonIgnore
     private Book book;
 

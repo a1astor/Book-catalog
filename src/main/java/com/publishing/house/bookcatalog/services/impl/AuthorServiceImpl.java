@@ -12,7 +12,7 @@ import com.publishing.house.bookcatalog.services.AuthorService;
 @Service
 public class AuthorServiceImpl implements AuthorService {
 
-    private AuthorRepository authorRepository;
+    private final AuthorRepository authorRepository;
 
     @Autowired
     public AuthorServiceImpl(final AuthorRepository authorRepository) {
@@ -35,25 +35,12 @@ public class AuthorServiceImpl implements AuthorService {
     }
 
     @Override
-    public Author deleteAuthorById(String id) {
-        Long authorId = parseId(id);
-        if (authorId == null) return null;
-        return authorRepository.deleteAuthorById(authorId);
-    }
-
-    private Long parseId(String id) {
-        Long authorId = null;
-        try {
-            authorId = Long.valueOf(id);
-        } catch (NumberFormatException exception) {
-            System.out.println("wrong id");
-            return null;
-        }
-        return authorId;
+    public Author deleteAuthorById(Long id) {
+        return authorRepository.deleteAuthorById(id);
     }
 
     @Override
-    public Author getAuthorById(String id) {
-        return authorRepository.getAuthorById(parseId(id));
+    public Author getAuthorById(Long id) {
+        return authorRepository.getAuthorById(id);
     }
 }

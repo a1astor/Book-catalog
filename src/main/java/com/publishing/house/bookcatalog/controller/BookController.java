@@ -1,8 +1,5 @@
-package com.publishing.house.bookcatalog.endpoints;
+package com.publishing.house.bookcatalog.controller;
 
-import java.sql.ResultSet;
-import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
@@ -24,44 +21,39 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.publishing.house.bookcatalog.model.Author;
 import com.publishing.house.bookcatalog.model.Book;
-import com.publishing.house.bookcatalog.model.BookDTO;
+import com.publishing.house.bookcatalog.DTO.BookDTO;
 import com.publishing.house.bookcatalog.services.AuthorService;
 import com.publishing.house.bookcatalog.services.BookService;
 
 @Transactional
 @Component
+@Consumes(MediaType.APPLICATION_JSON)
+@Produces(MediaType.APPLICATION_JSON)
 @Path("/book")
-public class BookEndpoint {
+public class BookController {
 
-    private BookService bookService;
-    private AuthorService authorService;
+    private final BookService bookService;
+    private final AuthorService authorService;
 
     @Autowired
-    public BookEndpoint(final BookService bookService, final AuthorService authorService) {
+    public BookController(final BookService bookService, final AuthorService authorService) {
         this.bookService = bookService;
         this.authorService = authorService;
     }
 
     @GET
-    @Produces(MediaType.APPLICATION_JSON)
     public Response getAllBooks() {
         List<Book> bookEntities = bookService.getAllBooks();
-        GenericEntity<List<Book>> list = new GenericEntity<>(bookEntities) {
-        };
-        return Response.ok(list).build();
+        return Response.ok(bookEntities).build();
     }
 
     @POST
-    @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.APPLICATION_JSON)
     public Response saveBook(Book book) {
         book = bookService.saveBook(book);
         return Response.ok(book).build();
     }
 
     @PUT
-    @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.APPLICATION_JSON)
     public Response updateBook(Book book) {
         book = bookService.updateBook(book);
         return Response.ok(book).build();
@@ -69,15 +61,14 @@ public class BookEndpoint {
 
     @DELETE
     @Path("{isbn}")
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response deleteBook(@PathParam("isbn") String isbn) {
+    public Response deleteBook(@PathParam("isbn") Long isbn) {
         Book book = bookService.deleteBookByIsbn(isbn);
         return Response.ok(book).build();
     }
 
     @GET
-    @Path("/byAuthor{id}")
-    public Response getAllBooksByAuthor(String id) {
+    @Path("/byAuthor/{id}")
+    public Response getAllBooksByAuthor(Long id) {
         Author author = authorService.getAuthorById(id);
         Set<Book> books = bookService.getAllBookByAuthor(author);
         return Response.ok(books).build();

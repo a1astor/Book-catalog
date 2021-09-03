@@ -1,7 +1,9 @@
-package com.publishing.house.bookcatalog.model;
+package com.publishing.house.bookcatalog.DTO;
 
 
 import java.util.List;
+
+import com.publishing.house.bookcatalog.model.Book;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 
 import com.publishing.house.bookcatalog.model.Author;
 import com.publishing.house.bookcatalog.model.Book;
-import com.publishing.house.bookcatalog.model.BookDTO;
+import com.publishing.house.bookcatalog.DTO.BookDTO;
 import com.publishing.house.bookcatalog.repositories.BookRepository;
 import com.publishing.house.bookcatalog.services.BookService;
 import com.publishing.house.bookcatalog.utils.NumberUtils;
@@ -17,7 +17,7 @@ import com.publishing.house.bookcatalog.utils.NumberUtils;
 @Service
 public class BookServiceImpl implements BookService {
 
-    private BookRepository bookRepository;
+    private final BookRepository bookRepository;
 
     @Autowired
     public BookServiceImpl(final BookRepository bookRepository) {
@@ -40,9 +40,8 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public Book deleteBookByIsbn(String isbn) {
-        Long id = NumberUtils.parseStringToLong(isbn);
-        return bookRepository.deleteBookByIsbn(id);
+    public Book deleteBookByIsbn(Long isbn) {
+        return bookRepository.deleteBookByIsbn(isbn);
     }
 
     @Override

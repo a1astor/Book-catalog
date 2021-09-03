@@ -1,4 +1,4 @@
-package com.publishing.house.bookcatalog.endpoints;
+package com.publishing.house.bookcatalog.controller;
 
 import java.util.List;
 
@@ -21,36 +21,31 @@ import com.publishing.house.bookcatalog.model.Review;
 import com.publishing.house.bookcatalog.services.ReviewService;
 
 @Component
+@Consumes(MediaType.APPLICATION_JSON)
+@Produces(MediaType.APPLICATION_JSON)
 @Path("/review")
-public class ReviewEndpoint {
+public class ReviewController {
 
-    private ReviewService reviewService;
+    private final ReviewService reviewService;
 
     @Autowired
-    public ReviewEndpoint(final ReviewService reviewService) {
+    public ReviewController(final ReviewService reviewService) {
         this.reviewService = reviewService;
     }
 
     @GET
-    @Produces(MediaType.APPLICATION_JSON)
     public Response getAllReviews() {
-        List<Review> reviews = reviewService.getAllReviews();
-        GenericEntity<List<Review>> list = new GenericEntity<>(reviews) {
-        };
-        return Response.ok(list).build();
+        final List<Review> reviews = reviewService.getAllReviews();
+        return Response.ok(reviews).build();
     }
 
     @POST
-    @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.APPLICATION_JSON)
     public Response saveReview(Review review) {
         review = reviewService.saveReview(review);
         return Response.ok(review).build();
     }
 
     @PUT
-    @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.APPLICATION_JSON)
     public Response updateReview(Review review) {
         review = reviewService.updateReview(review);
         return Response.ok(review).build();
@@ -58,8 +53,7 @@ public class ReviewEndpoint {
 
     @DELETE
     @Path("{id}")
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response deleteReview(@PathParam("id") String id) {
+    public Response deleteReview(@PathParam("id") Long id) {
         Review review = reviewService.deleteReviewById(id);
         return Response.ok(review).build();
     }

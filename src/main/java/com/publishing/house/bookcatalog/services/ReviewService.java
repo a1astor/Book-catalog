@@ -11,5 +11,5 @@ public interface ReviewService {
 
     Review updateReview(Review review);
 
-    Review deleteReviewById(String id);
+    Review deleteReviewById(Long id);
 }

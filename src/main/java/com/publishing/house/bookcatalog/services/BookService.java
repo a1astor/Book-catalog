@@ -5,7 +5,7 @@ import java.util.Set;
 
 import com.publishing.house.bookcatalog.model.Author;
 import com.publishing.house.bookcatalog.model.Book;
-import com.publishing.house.bookcatalog.model.BookDTO;
+import com.publishing.house.bookcatalog.DTO.BookDTO;
 
 public interface BookService {
     List<Book> getAllBooks();
@@ -14,7 +14,7 @@ public interface BookService {
 
     Book updateBook(Book book);
 
-    Book deleteBookByIsbn(String isbn);
+    Book deleteBookByIsbn(Long isbn);
 
     Set<Book> getAllBookByAuthor(Author author);
 

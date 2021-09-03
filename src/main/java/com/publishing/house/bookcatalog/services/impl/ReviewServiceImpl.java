@@ -14,7 +14,7 @@ import com.publishing.house.bookcatalog.utils.NumberUtils;
 @Service
 public class ReviewServiceImpl implements ReviewService {
 
-    private ReviewRepository reviewRepository;
+    private final ReviewRepository reviewRepository;
 
     @Autowired
     public ReviewServiceImpl(final ReviewRepository reviewRepository) {
@@ -37,7 +37,7 @@ public class ReviewServiceImpl implements ReviewService {
     }
 
     @Override
-    public Review deleteReviewById(String id) {
-        return reviewRepository.deleteReviewById(NumberUtils.parseStringToLong(id));
+    public Review deleteReviewById(Long id) {
+        return reviewRepository.deleteReviewById(id);
     }
 }
