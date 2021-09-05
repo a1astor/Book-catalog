@@ -3,7 +3,6 @@ package com.publishing.house.bookcatalog.model;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.Objects;
-import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -17,30 +16,39 @@ import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import lombok.Data;
+import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 @Entity
 @Getter
 @Setter
 @NoArgsConstructor
+@AllArgsConstructor
+@ToString(exclude = "book")
+@EqualsAndHashCode(exclude = "book")
 @Table(name = "reviews")
 public class Review implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long reviewId;
+    @Column(name = "commenter")
     private String commenter;
+    @Column(name = "review_name")
     private String name;
+    @Column(name = "review_comment")
     private String comment;
+    @Column(name = "rating")
     private Integer rating;
 
     @Column(name = "create_date")
     private Date createDate;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @JsonIgnore
     private Book book;
 

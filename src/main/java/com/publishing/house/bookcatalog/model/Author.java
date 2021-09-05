@@ -18,13 +18,17 @@ import org.hibernate.Hibernate;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 @Entity
 @Getter
 @Setter
+@ToString(exclude = "books")
+@EqualsAndHashCode(exclude = "books")
 @NoArgsConstructor
 @Table(name = "authors")
 public class Author implements Serializable {
@@ -38,7 +42,7 @@ public class Author implements Serializable {
     private String secondName;
     @Column(name = "create_date")
     private Date createDate;
-    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "authors")
+    @ManyToMany(fetch = FetchType.EAGER, mappedBy = "authors")
     @JsonIgnore
     private Set<Book> books;
 

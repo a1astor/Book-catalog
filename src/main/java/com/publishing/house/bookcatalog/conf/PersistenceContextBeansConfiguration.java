@@ -24,6 +24,7 @@ public class PersistenceContextBeansConfiguration {
         properties.put("hibernate.connection.characterEncoding", "utf8mb4");
         properties.put("hibernate.connection.CharSet", "utf8mb4");
         properties.put("hibernate.connection.useUnicode", "true");
+        properties.put("hibernate.hbm2ddl.auto", "update");
         properties.put("current_session_context_class", "org.springframework.orm.hibernate5.SpringSessionContext");
         return properties;
     }

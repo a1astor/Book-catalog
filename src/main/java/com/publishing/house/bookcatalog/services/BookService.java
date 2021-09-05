@@ -1,5 +1,6 @@
 package com.publishing.house.bookcatalog.services;
 
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
@@ -19,4 +20,14 @@ public interface BookService {
     Set<Book> getAllBookByAuthor(Author author);
 
     List<BookDTO> getBookWithRating();
+
+    Book getBook(Long id);
+
+    double getAverageRatingByBookId(Long id);
+
+    int bulkDeleteBooksById(List<Long> listId);
+
+    Set<Book> getBookByAuthorId(Long authorId);
+
+    List<Book> getBooksByRating(int ratings);
 }

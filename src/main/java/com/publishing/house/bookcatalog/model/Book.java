@@ -2,6 +2,7 @@ package com.publishing.house.bookcatalog.model;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
@@ -22,23 +23,29 @@ import org.hibernate.Hibernate;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 @Entity
 @Setter
 @Getter
 @NoArgsConstructor
+@AllArgsConstructor
+@ToString(exclude = {"reviews", "authors"})
+@EqualsAndHashCode(exclude = {"reviews", "authors"})
 @Table(name = "books")
 public class Book implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "isbn")
     private Long isbn;
-    @Column(name = "name")
+    @Column(name = "book_name")
     private String name;
-    @Column(name = "year")
+    @Column(name = "book_year")
     private int year;
     @Column(name = "published")
     private Date published;
@@ -47,7 +54,7 @@ public class Book implements Serializable {
     @Column(name = "create_date")
     private Date createDate;
 
-    @ManyToMany(fetch = FetchType.LAZY,cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinTable(name = "book_author",
             joinColumns = @JoinColumn(name = "isbn"),
             inverseJoinColumns = @JoinColumn(name = "authorId")
@@ -55,7 +62,7 @@ public class Book implements Serializable {
     @JsonIgnore
     private Set<Author> authors;
 
-    @OneToMany(fetch = FetchType.LAZY,
+    @OneToMany(fetch = FetchType.EAGER,
             mappedBy = "book",
             cascade = CascadeType.ALL,
             orphanRemoval = true

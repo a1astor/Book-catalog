@@ -10,13 +10,13 @@ import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
-import javax.ws.rs.core.GenericEntity;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.publishing.house.bookcatalog.DTO.AuthorDTO;
 import com.publishing.house.bookcatalog.model.Author;
 import com.publishing.house.bookcatalog.services.AuthorService;
 
@@ -29,13 +29,13 @@ public class AuthorController {
 
     private AuthorService authorService;
 
-    public AuthorController(@Autowired AuthorService authorService) {
+    public AuthorController(@Autowired final AuthorService authorService) {
         this.authorService = authorService;
     }
 
     @GET
     public Response getAllAuthors() {
-        List<Author> authors = authorService.getAllAuthors();
+        final List<Author> authors = authorService.getAllAuthors();
         return Response.ok(authors).build();
     }
 
@@ -53,15 +53,36 @@ public class AuthorController {
 
     @DELETE
     @Path("/{id}")
-    public Response deleteBook(@PathParam("id") Long id) {
+    public Response deleteAuthor(@PathParam("id") final Long id) {
         Author author = authorService.deleteAuthorById(id);
         return Response.ok(author).build();
     }
 
+    @DELETE
+    @Path("/withOutBooks/{id}")
+    public Response deleteAuthorWithOutbooks(@PathParam("id") Long id) {
+        Author author = authorService.deleteAuthorWithOutBooksById(id);
+        return Response.ok(author).build();
+    }
+
+    @DELETE
+    @Path("/bulk/{listId}")
+    public Response bulkDelete(@PathParam("listId") final List<Long> listId) {
+        int deletedCount = authorService.bulkDeleteAuthorById(listId);
+        return Response.ok(deletedCount).build();
+    }
+
     @GET
     @Path("/{id}")
-    public Response getBookById(@PathParam("id") Long id) {
+    public Response getAuthorById(@PathParam("id") Long id) {
         Author author = authorService.getAuthorById(id);
         return Response.ok(author).build();
+    }
+
+    @GET
+    @Path("/withAverageRating")
+    public Response getAuthorsWithAverageRating() {
+        List<AuthorDTO> authorsWithAverageRating = authorService.getAuthorsWithAverageRating();
+        return Response.ok(authorsWithAverageRating).build();
     }
 }

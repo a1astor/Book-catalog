@@ -1,6 +1,8 @@
 package com.publishing.house.bookcatalog.controller;
 
+import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
@@ -17,7 +19,9 @@ import javax.ws.rs.core.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.publishing.house.bookcatalog.model.Book;
 import com.publishing.house.bookcatalog.model.Review;
+import com.publishing.house.bookcatalog.services.BookService;
 import com.publishing.house.bookcatalog.services.ReviewService;
 
 @Component
@@ -27,16 +31,32 @@ import com.publishing.house.bookcatalog.services.ReviewService;
 public class ReviewController {
 
     private final ReviewService reviewService;
+    private final BookService bookService;
 
     @Autowired
-    public ReviewController(final ReviewService reviewService) {
+    public ReviewController(final ReviewService reviewService, final BookService bookService) {
         this.reviewService = reviewService;
+        this.bookService = bookService;
     }
 
     @GET
     public Response getAllReviews() {
-        final List<Review> reviews = reviewService.getAllReviews();
+        final Collection<Review> reviews = reviewService.getAllReviews();
         return Response.ok(reviews).build();
+    }
+
+    @GET
+    @Path("/byBookId/{bookId}")
+    public Response getReviewsByBookId(@PathParam("bookId") Long bookId) {
+        Set<Review> reviewsByBookId = reviewService.getReviewsByBookId(bookId);
+        return Response.ok(reviewsByBookId).build();
+    }
+
+    @GET
+    @Path("/{reviewId}")
+    public Response getReviewsById(@PathParam("reviewId") Long reviewId) {
+        Review review = reviewService.getReviewsById(reviewId);
+        return Response.ok(review).build();
     }
 
     @POST
