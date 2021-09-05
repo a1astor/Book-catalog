@@ -4,6 +4,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
+import com.publishing.house.bookcatalog.DTO.BookAndReviewDTO;
 import com.publishing.house.bookcatalog.model.Author;
 import com.publishing.house.bookcatalog.model.Book;
 import com.publishing.house.bookcatalog.DTO.BookDTO;
@@ -30,4 +31,6 @@ public interface BookService {
     Set<Book> getBookByAuthorId(Long authorId);
 
     List<Book> getBooksByRating(int ratings);
+
+    Book addReview(BookAndReviewDTO bindingData);
 }

@@ -16,9 +16,11 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.publishing.house.bookcatalog.DTO.BookAndReviewDTO;
 import com.publishing.house.bookcatalog.model.Author;
 import com.publishing.house.bookcatalog.model.Book;
 import com.publishing.house.bookcatalog.DTO.BookDTO;
@@ -97,8 +99,15 @@ public class BookController {
 
     @DELETE
     @Path("/bulk/{listId}")
-    public Response bulkDelete(@PathParam("listId") List<Long> listId) {
+    public Response bulkDelete(List<Long> listId) {
         int deletedCount = bookService.bulkDeleteBooksById(listId);
         return Response.ok(deletedCount).build();
+    }
+
+    @PUT
+    @Path("/bind")
+    public Response bindBookAndReview(BookAndReviewDTO bindingData) {
+        Book book = bookService.addReview(bindingData);
+        return Response.ok(book).build();
     }
 }

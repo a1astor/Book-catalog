@@ -23,7 +23,6 @@ public class ReviewRepository {
         this.entityManager = entityManager;
     }
 
-    @Transactional
     public List<Review> getAllReviews() {
         return entityManager.createQuery("from Review").getResultList();
     }

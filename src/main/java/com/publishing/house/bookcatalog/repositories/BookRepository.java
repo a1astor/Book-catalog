@@ -69,4 +69,12 @@ public class BookRepository {
         query.setParameter("ids", listId);
         return query.executeUpdate();
     }
+
+    public Book addReviewToBook(Long isbnId, Review reviewId) {
+        Book book = entityManager.find(Book.class, isbnId);
+        if (book != null) {
+            book.addReview(reviewId);
+        }
+        return book;
+    }
 }

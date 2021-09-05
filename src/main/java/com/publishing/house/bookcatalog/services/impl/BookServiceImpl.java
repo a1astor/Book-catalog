@@ -8,11 +8,14 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Service;
 
+import com.publishing.house.bookcatalog.DTO.BookAndReviewDTO;
 import com.publishing.house.bookcatalog.model.Author;
 import com.publishing.house.bookcatalog.model.Book;
 import com.publishing.house.bookcatalog.DTO.BookDTO;
@@ -111,5 +114,15 @@ public class BookServiceImpl implements BookService {
             }
         }
         return books;
+    }
+
+    @Override
+    @Nullable
+    public Book addReview(BookAndReviewDTO bindingData) {
+        final Review review = reviewRepository.getReviewById(bindingData.getReviewId());
+        if (review == null) {
+            return null;
+        }
+        return bookRepository.addReviewToBook(bindingData.getIsbn(),review);
     }
 }
