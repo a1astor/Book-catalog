@@ -1,4 +1,4 @@
-package com.publishing.house.bookcatalog.conf;
+package com.publishing.house.bookcatalog.config;
 
 
 import java.util.Properties;

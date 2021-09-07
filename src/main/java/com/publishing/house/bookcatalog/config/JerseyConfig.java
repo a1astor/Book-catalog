@@ -1,4 +1,4 @@
-package com.publishing.house.bookcatalog.conf;
+package com.publishing.house.bookcatalog.config;
 
 import org.glassfish.jersey.server.ResourceConfig;
 import org.springframework.stereotype.Component;
