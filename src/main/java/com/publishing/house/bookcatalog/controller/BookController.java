@@ -69,8 +69,15 @@ public class BookController {
     }
 
     @GET
+    @Path("/{isbn}")
+    public Response getBooksById(@PathParam("isbn")Long isbn) {
+        Book books = bookService.getBook(isbn);
+        return Response.ok(books).build();
+    }
+
+    @GET
     @Path("/byAuthor/{id}")
-    public Response getAllBooksByAuthor(Long id) {
+    public Response getAllBooksByAuthor(@PathParam("id")Long id) {
         Author author = authorService.getAuthorById(id);
         Set<Book> books = bookService.getAllBookByAuthor(author);
         return Response.ok(books).build();
@@ -83,12 +90,12 @@ public class BookController {
         return Response.ok(bookWithRating).build();
     }
 
-    @GET
-    @Path("/{authorId}")
-    public Response getBookByAuthorId(@PathParam("authorId") Long authorId) {
-        Set<Book> booksByAuthor = bookService.getBookByAuthorId(authorId);
-        return Response.ok(booksByAuthor).build();
-    }
+//    @GET
+//    @Path("/{authorId}")
+//    public Response getBookByAuthorId(@PathParam("authorId") Long authorId) {
+//        Set<Book> booksByAuthor = bookService.getBookByAuthorId(authorId);
+//        return Response.ok(booksByAuthor).build();
+//    }
 
     @GET
     @Path("/byRating/{rating}")
@@ -99,7 +106,7 @@ public class BookController {
 
     @DELETE
     @Path("/bulk/{listId}")
-    public Response bulkDelete(List<Long> listId) {
+    public Response bulkDelete(@PathParam("listId")List<Long> listId) {
         int deletedCount = bookService.bulkDeleteBooksById(listId);
         return Response.ok(deletedCount).build();
     }

@@ -1,38 +1,51 @@
 package com.publishing.house.bookcatalog.steps;
 
 
+import java.util.Date;
+
+import org.junit.Assert;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.web.client.RestTemplate;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+
+import com.publishing.house.bookcatalog.BookHttpClient;
+import com.publishing.house.bookcatalog.model.Book;
 
 import io.cucumber.java.en.And;
+import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
-import io.cucumber.spring.CucumberContextConfiguration;
-import io.restassured.http.ContentType;
 
-import static io.restassured.RestAssured.given;
-import static io.restassured.RestAssured.when;
-import static org.hamcrest.core.Is.is;
 
 public class GetPosSteps {
 
-    @io.cucumber.java.en.Given("Perfome GET operation for {string}")
-    public void perfomeGETOperationFor(String string) {
-//        given().contentType(ContentType.JSON);
+    private final BookHttpClient bookHttpClient;
+    private ResponseEntity<Book> book;
+    private Long newBookId;
 
+    @Autowired
+    public GetPosSteps(final BookHttpClient bookHttpClient) {
+        this.bookHttpClient = bookHttpClient;
+    }
+
+    @Given("check if there is book with isbn = {string} and name = {string}")
+    public void checkIfThereIsBookWithIsbnAndName(final String isbn, final String bookName) {
+        final ResponseEntity<Book> bookEntity = bookHttpClient.getBook(isbn);
+        if (bookEntity.getBody() == null) {
+            final ResponseEntity<Book> saveResponseEntity = bookHttpClient.saveEntity(new Book(null, bookName, 2020, new Date(), "getter", new Date(), null, null));
+            Assert.assertEquals(HttpStatus.OK, saveResponseEntity.getStatusCode());
+            newBookId = saveResponseEntity.getBody().getIsbn();
+        }
     }
 
     @And("perfome GET for book id {string}")
-    public void perfomeGETForBookId(String bookId) {
-        RestTemplate restTemplate = new RestTemplate();
-        //TODO make link for yaml
-        when().get(String.format("http://localhost:8081/book/%s", bookId))
-                .then().body("name", is("a"));
+    public void perfomeGETForBookId(final String bookId) {
+        book = bookHttpClient.getBook(newBookId != null ? String.valueOf(newBookId) : bookId);
+        Assert.assertEquals(HttpStatus.OK, book.getStatusCode());
+        Assert.assertNotNull(book.getBody());
     }
 
     @Then("should return book with name {string}")
-    public void shouldReturnBookWithName(String arg0) {
-
+    public void shouldReturnBookWithName(final String bookName) {
+        Assert.assertEquals(bookName, book.getBody().getName());
     }
 }

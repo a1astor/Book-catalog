@@ -62,11 +62,7 @@ public class Book implements Serializable {
     @JsonIgnore
     private Set<Author> authors;
 
-    @OneToMany(fetch = FetchType.EAGER,
-            mappedBy = "book",
-            cascade = CascadeType.ALL,
-            orphanRemoval = true
-    )
+    @OneToMany(mappedBy = "book")
     @JsonIgnore
     private Set<Review> reviews;
 

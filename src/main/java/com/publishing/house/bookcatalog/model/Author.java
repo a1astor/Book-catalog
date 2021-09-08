@@ -42,7 +42,7 @@ public class Author implements Serializable {
     private String secondName;
     @Column(name = "create_date")
     private Date createDate;
-    @ManyToMany(fetch = FetchType.EAGER, mappedBy = "authors")
+    @ManyToMany(mappedBy = "authors")
     @JsonIgnore
     private Set<Book> books;
 
